@@ -2,6 +2,19 @@ instruções simples (ex.: "Abra no VsCode ou Colab e rode todas as células" ou
 
 
 
+# criar o ambiente
+python -m venv .venv
+# ativar (Windows)
+.venv\Scripts\activate
+# desativar
+deactivate
+
+# gerar e reaplicar dependências
+pip freeze > requirements.txt
+pip install -r requirements.txt
+
+
+
 DESAFIO
 
 Entregar um script em Python que realize uma Análise Exploratória da base Varejo 
