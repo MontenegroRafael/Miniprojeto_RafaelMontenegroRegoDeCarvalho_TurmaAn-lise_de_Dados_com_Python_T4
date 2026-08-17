@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Carrega o arquivo csv / transforma arquivo em um DataFrame. 
   # sep=';': Define o ponto e vírgula (;)
@@ -82,113 +83,15 @@ print(f"• (Moda) A maioria dos Clientes tem:{filhos.mode()[0] if not filhos.mo
 print(f"• Total de Filhos de todos os Clientes : {filhos.sum().round(2)}")
 
 
+print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n PADRÕES DE AGRUPAMENTOS \nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 
+produtos_mais_vendidos = pd.DataFrame(df_limpo.groupby(["CategoriaProduto","NomeProduto"])["id_Produto"].count().reset_index())
+#produtos_mais_vendidos = produtos_mais_vendidos.drop(produtos_mais_vendidos["CategoriaProduto"]=="#N/D")
+produtos_mais_vendidos = produtos_mais_vendidos[produtos_mais_vendidos["CategoriaProduto"] != "#N/D"]
+produtos_mais_vendidos = produtos_mais_vendidos.rename(columns={"id_Produto":"Contagem","CategoriaProduto":"Categoria","PR_NOME":"Nome do produto"})
+produtos_mais_vendidos = produtos_mais_vendidos.groupby("Categoria").apply(lambda x: x.nlargest(1,"Contagem"))
 
-
-
-'''
-
-#if "Qtd_Filhos_Cl" in df_limpo.columns:
-df_somaFilhosPorCliente = df_limpo.groupby('id_Cliente')['Qtd_Filhos_Cl'].sum().reset_index()
-print(df_somaFilhosPorCliente.head(10))
-
-print(f"• Contagem (N) : {df_somaFilhosPorCliente.sum().round(2)}")
-print(f"• Mediana      : {somaFilhosPorCliente.median():.2f}")
-print(f"• Desvio Padrão: {somaFilhosPorCliente.std():.2f}")
-print(f"• Quartil 25%  : {somaFilhosPorCliente.quantile(0.25):.2f}")
-print(f"• Quartil 50%  : {somaFilhosPorCliente.quantile(0.50):.2f}")
-print(f"• Quartil 75%  : {somaFilhosPorCliente.quantile(0.75):.2f}")
-
-print(f"• Média de filhos por Cliente : {somaFilhosPorCliente.mean():.2f}")
-print(f"• Máximo de filhos por Cliente: {somaFilhosPorCliente.max()}")
-print(f"• Mínimo de filhos por Cliente: {somaFilhosPorCliente.min()}")
-print(f"• (Moda) A maioria dos Clientes tem:{somaFilhosPorCliente.mode()[0] if not somaFilhosPorCliente.mode().empty else 'N/A'} filhos")
-
-
-
-#df_CadastroCliente = pd.read_csv('BaseVarejoLimpo.csv', usecols=['id_Cliente','GeneroCliente','EstadoCivil_Cl','Qtd_Filhos_Cl','SegmentoCliente'], index_col='id_Cliente')
-#df_CadastroCliente = df_CadastroCliente[~df_CadastroCliente.index.duplicated(keep='first')]
-
-
-
-
-
-
-print("Valores nulos por coluna:")
-print(df_limpo.isnull().sum()) # Mostrar a quantidade de valores nulos por coluna
-
-
-
-print(df_limpo.head(10)) # Mostrar as primeiras 10 linhas do novo arquivo limpo
-
-# Contar quantas linhas duplicadas existem no total
-total_duplicadas = df_limpo.duplicated().sum()
-
-if total_duplicadas > 0:
-  print(f"Foram encontradas {total_duplicadas} linhas duplicadas.")
-  # Exibir as linhas duplicadas
-  print(df_limpo[df_limpo.duplicated(keep=False)])
-else:
-  print("Não há linhas duplicadas neste arquivo.")
-
-print(df_limpo.info()) # tipos e nulos por coluna no arquivo Limpo
-
-# Verificar duplicadas com base em uma coluna específica
-duplicadas_coluna = df_limpo.duplicated(subset=["nome_Produto","id_Compra"]).sum()
-print(f"Duplicatas na coluna: {duplicadas_coluna}")
-print(df_limpo[df_limpo.duplicated(keep=False)])
-
-
-
-if "nome_Produto" in df_limpo.columns:
-    print("\n1. Volume de Compras por Categoria:")
-    agrupado_categoria = df_limpo.groupby("nome_Produto").agg(
-        Total_Compras=("nome_Produto", "count"),
-        Media_Filhos=("filhos_Cliente", "mean") 
-        if "filhos_Cliente" in df_limpo.columns 
-        else ("nome_Produto", "count")
-    ).reset_index().sort_values(by="Total_Compras", ascending=False)
-    
-    print(agrupado_categoria)
-
-
-# 2. Escolher as duas colunas
-x = df_limpo['dt_Compra']
-y = df_limpo['id_Compra']
-
-# 3. Criar o gráfico (ex: linha ou barras)
-plt.bar(x, y)  # Use plt.bar(x, y) se preferir gráfico de barras
-
-# 4. Adicionar títulos
-plt.title('Meu Gráfico')
-plt.xlabel('Data da Compra')
-plt.ylabel('ID da Compra')
-
-# 5. Mostrar o gráfico na tela
-plt.show()
-
-'''
-
-'''
-
-#, 
-#, index_col='DATA'
-df.describe() # Mostra estatísticas descritivas do DataFrame
-print(df.describe()) # Mostra estatísticas descritivas do DataFrame
-print("\nInformações das colunas:")
-print(df.info())
-print("\nValores nulos por coluna:")
-print(df.isnull().sum())
-
-df = pd.read_csv('BaseVarejo.csv', nrows=0)
-
-
-pd.set_option("display.max_columns", None)
-print(df.iloc[:, -3:].head())
-
-
-print(df.info()) # tipos e nulos por coluna
-
-
-print(df.columns)
-'''
+produtos_mais_vendidos = produtos_mais_vendidos.drop(columns=["Categoria"]).reset_index()
+sns.barplot(data=produtos_mais_vendidos,x="Nome do produto",y="Contagem")
+plt.xticks(rotation=45)
+plt.title("Maior ocorrencia de vendas em cada categoria")
