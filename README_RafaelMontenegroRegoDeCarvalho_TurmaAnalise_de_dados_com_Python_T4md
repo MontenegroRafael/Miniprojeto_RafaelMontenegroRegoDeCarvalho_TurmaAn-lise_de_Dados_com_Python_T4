@@ -1,9 +1,43 @@
-Análise Exploratória de Dados (AED) aplicada ao varejo, usando a base "Varejo" com registros reais de compras — datas, clientes, produtos, categorias e valores.
-As colunas não possuem correlação;
-Mulheres compraram mais do que homens;
-A categoria mais vendida é, de longe, Alimentos, já o produto mais vendido é, também de longe, presunto cozido;
-Poucas pessoas viúvas compraram nesse mercado, já os outros estados civis compraram em volumes similares entre si;
-Pessoas sem filhos compraram mais do que pessoas com filhos;
-A classe social que mais consome é a classe média;
-Os dados das vendas de cada mês nos 4 anos fornecidos não segue um padrão específico ou uma tendência, nem a média de vendas em cada mês;
-As proporções entre os dados possuem estranhas coincidências, o que nos leva a crer podem ter sido inflados artificialmente
+instruções simples Abra no VsCode.
+
+
+
+# criar o ambiente
+python -m venv .venv
+# ativar (Windows)
+.venv\Scripts\activate
+# desativar
+deactivate
+
+# gerar e reaplicar dependências caso necessario
+pip freeze > requirements.txt
+pip install -r requirements.txt
+
+
+
+#**Análise do DataFrame** ![legenda](https://img.icons8.com/plasticine/1200/python.jpg)
+
+Este projeto analisa um conjunto de dados para achar respostas e padrões úteis. Todo o trabalho foi feito no VS Code.
+
+##**O que o projeto faz:**
+
+>Limpa e organiza os dados brutos.
+>Cria gráficos para mostrar tendências.
+>Mostra os pontos mais importantes dos dados.
+
+##**Ferramentas usadas:**
+
+>PythonPandas (para tratar os dados)
+>Matplotlib / Seaborn (para desenhar os gráficos)
+>VS Code
+
+##**Como rodar o projeto:**
+
+>Abra esta pasta no seu VS Code.
+>Crie e ative um ambiente virtual.
+>Instale os pacotes necessários
+
+###***import pandas as pd***
+###***import numpy as np***
+###***import matplotlib.pyplot as plt***
+###***import seaborn as sns***

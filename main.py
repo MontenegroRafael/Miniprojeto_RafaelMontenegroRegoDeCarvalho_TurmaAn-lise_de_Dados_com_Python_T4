@@ -132,3 +132,10 @@ print(tabela_categoria_por_filho)
 # Mostra o grafico.
 plt.show()
 
+
+print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n CONCLUSÕES \nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+
+print("Pessoas sem filhos compraram mais do que pessoas com filhos")
+print("Mulheres compraram mais do que homens")
+print("As colunas não possuem correlação")
+print("As proporções entre os dados possuem estranhas coincidências")

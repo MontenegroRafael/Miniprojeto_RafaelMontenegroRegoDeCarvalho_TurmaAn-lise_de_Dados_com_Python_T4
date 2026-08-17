@@ -1,4 +1,4 @@
-instruções simples (ex.: "Abra no VsCode ou Colab e rode todas as células" ou "python Miniprojeto_…py").
+instruções simples Abra no VsCode.
 
 
 
@@ -9,28 +9,40 @@ python -m venv .venv
 # desativar
 deactivate
 
-# gerar e reaplicar dependências
+# gerar e reaplicar dependências caso necessario
 pip freeze > requirements.txt
 pip install -r requirements.txt
 
 
 
-DESAFIO
+#**Análise do DataFrame** ![legenda](https://img.icons8.com/plasticine/1200/python.jpg)
 
-Entregar um script em Python que realize uma Análise Exploratória da base Varejo 
+Este projeto analisa um conjunto de dados para achar respostas e padrões úteis. Todo o trabalho foi feito no VS Code.
 
-Etapas obrigatórias:
-1- Carregar a base Varejo.csv com pandas e mostrar: número de registros, colunas e tipos de dados.
+##**O que o projeto faz:**
 
-2- Verificar e reportar ao menos dois problemas básicos: valores nulos por coluna, duplicatas e possíveis inconsistências (ex.: datas inválidas ou categorias vazias).
+>Limpa e organiza os dados brutos.
+>Cria gráficos para mostrar tendências.
+>Mostra os pontos mais importantes dos dados.
 
-3- Fazer as três etapas de limpeza mínima necessária: remover ou imputar nulos (explique a escolha), eliminar duplicatas relevantes e ajustar tipos de dados (ex.: converter coluna DATA para datetime).
+##**Ferramentas usadas:**
 
-4- Gerar estatísticas descritivas básicas para coluna de número de filhos do cliente (média; mediana; desvio padrão; moda; máximo; mínimo; e contagem, quartis)
+>PythonPandas (para tratar os dados)
+>Matplotlib / Seaborn (para desenhar os gráficos)
+>VS Code
 
-5- Explorar padrões de agrupamento com pelo menos dois agrupamentos (por exemplo: gênero com mais vendas, compras), usando groupby() ou pivot_table().
+##**Como rodar o projeto:**
 
-6- Produzir um pequeno bloco de conclusões (3–6 tópicos) com os principais insights obtidos e possíveis problemas remanescentes na base. Notebook Python, MD ou um “print”.
+>Abra esta pasta no seu VS Code.
+>Crie e ative um ambiente virtual.
+>Instale os pacotes necessários
+
+###***import pandas as pd***
+###***import numpy as np***
+###***import matplotlib.pyplot as plt***
+###***import seaborn as sns***
+
+
 
 
 
