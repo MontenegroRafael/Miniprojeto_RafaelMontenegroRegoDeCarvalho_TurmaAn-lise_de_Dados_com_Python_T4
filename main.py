@@ -25,7 +25,7 @@ print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n     LIMPANDO O DATAFRAME    \nxxxxxxx
   # axis=1 para apagar a coluna, caso fosse axis=0 apagaria a linha
 df_limpo = df.dropna(how='all', axis=1)
 df_limpo = df_limpo.dropna(how='all', axis=0)
-
+df_limpo = df_limpo.dropna(subset=['PR_CAT'], how='any') # Remove linhas com valores nulos na coluna PR_CAT
 
 # Criação de um dicionário para renomear as colunas do DataFrame
 converção_colunas = {
@@ -85,13 +85,50 @@ print(f"• Total de Filhos de todos os Clientes : {filhos.sum().round(2)}")
 
 print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n PADRÕES DE AGRUPAMENTOS \nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 
-produtos_mais_vendidos = pd.DataFrame(df_limpo.groupby(["CategoriaProduto","NomeProduto"])["id_Produto"].count().reset_index())
-#produtos_mais_vendidos = produtos_mais_vendidos.drop(produtos_mais_vendidos["CategoriaProduto"]=="#N/D")
-produtos_mais_vendidos = produtos_mais_vendidos[produtos_mais_vendidos["CategoriaProduto"] != "#N/D"]
-produtos_mais_vendidos = produtos_mais_vendidos.rename(columns={"id_Produto":"Contagem","CategoriaProduto":"Categoria","PR_NOME":"Nome do produto"})
-produtos_mais_vendidos = produtos_mais_vendidos.groupby("Categoria").apply(lambda x: x.nlargest(1,"Contagem"))
+def cor(data,target,columns):
+    return ['#189BCC' if x in columns else "#EA213A" for x in sorted(data[target].unique())]
 
-produtos_mais_vendidos = produtos_mais_vendidos.drop(columns=["Categoria"]).reset_index()
-sns.barplot(data=produtos_mais_vendidos,x="Nome do produto",y="Contagem")
-plt.xticks(rotation=45)
-plt.title("Maior ocorrencia de vendas em cada categoria")
+
+# Número total de compras por gênero do cliente
+cat_por_cl = df_limpo.groupby(['GeneroCliente', 'CategoriaProduto'])['id_Compra'].nunique().reset_index()
+color = cor(cat_por_cl, "GeneroCliente", ["M"])
+quantidade_genero = pd.DataFrame(df_limpo["GeneroCliente"].value_counts())
+g = sns.barplot(quantidade_genero.T, palette=color)
+g.set_xlabel("Gênero")
+g.set_ylabel("Compras")
+
+# Demostração do grafico no VScode
+print("\nNúmero total de compras por gênero do cliente:")
+tabela_produto_por_genero = pd.pivot_table(
+  df_limpo,
+  index="CategoriaProduto",
+  columns="GeneroCliente",
+  values="id_Compra" if "id_Compra" in df_limpo.columns else "CategoriaProduto",
+  aggfunc="count",
+  fill_value=0
+)
+print(tabela_produto_por_genero)
+
+
+# Mostra o grafico.
+plt.show()
+
+# Número de compras por número de filhos do cliente
+media_filhos = pd.DataFrame(df_limpo.groupby(["Qtd_Filhos_Cl"])["id_Produto"].count()).reset_index()
+g = sns.barplot(data=media_filhos,x="Qtd_Filhos_Cl",y="id_Produto")
+g.set_ylabel("Contagem de compras")
+g.set_xlabel("Número de Filhos")
+
+# Demostração do grafico no VScode
+print("\nNúmero de compras por número de filhos do cliente:")
+tabela_categoria_por_filho = df_limpo.groupby("CategoriaProduto").agg(
+  Total_Compras=("CategoriaProduto", "count"),
+  Media_Filhos=("Qtd_Filhos_Cl", "mean") if "Qtd_Filhos_Cl" in df_limpo.columns else ("CategoriaProduto", "count")
+).reset_index("CategoriaProduto").sort_values(by="Total_Compras", ascending=False)
+    
+print(tabela_categoria_por_filho)
+
+
+# Mostra o grafico.
+plt.show()
+
