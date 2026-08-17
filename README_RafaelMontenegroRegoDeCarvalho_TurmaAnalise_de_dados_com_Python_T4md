@@ -1,1 +1,9 @@
 Análise Exploratória de Dados (AED) aplicada ao varejo, usando a base "Varejo" com registros reais de compras — datas, clientes, produtos, categorias e valores.
+As colunas não possuem correlação;
+Mulheres compraram mais do que homens;
+A categoria mais vendida é, de longe, Alimentos, já o produto mais vendido é, também de longe, presunto cozido;
+Poucas pessoas viúvas compraram nesse mercado, já os outros estados civis compraram em volumes similares entre si;
+Pessoas sem filhos compraram mais do que pessoas com filhos;
+A classe social que mais consome é a classe média;
+Os dados das vendas de cada mês nos 4 anos fornecidos não segue um padrão específico ou uma tendência, nem a média de vendas em cada mês;
+As proporções entre os dados possuem estranhas coincidências, o que nos leva a crer podem ter sido inflados artificialmente

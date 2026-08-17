@@ -1,8 +1,7 @@
-# importa a biblioteca pandas.
+# importa a biblioteca pandas, nunpy e matplotlib.
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import csv
 
 # Carrega o arquivo csv / transforma arquivo em um DataFrame. 
   # sep=';': Define o ponto e vírgula (;)
@@ -11,37 +10,92 @@ import csv
   # dayfirst=True: Define que o formato da data é dia/mês/ano.
 df = pd.read_csv('BaseVarejo.csv', sep=';', encoding='utf-8-sig', parse_dates=['DATA'], dayfirst=True,) 
 
+print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n PRIMEIRA ANALISE DO DATAFRAME\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+
+print(f">>> Total de {df.shape[0]} colunas.")
+print(f">>> Total de {df.shape[1]} linhas.\n")
 print(df.head(10)) # Mostrar as primeiras 10 linhas
 print(df.info()) # tipos e nulos por coluna
 
-
-#criação de um dicionário para renomear as colunas do DataFrame
-converção_colunas = {
-    'DATA': 'dt_Compra',
-    'CO_ID': 'id_Compra',
-    'CL_ID': 'id_Cliente',
-    'CL_GENERO': 'genero_Cliente',
-    'CL_EC': 'estadoCivil_Cliente',
-    'CL_FHL': 'filhos_Cliente',
-    'CL_SEG': 'segmento_Cliente',
-    'PR_ID': 'id_Produto',
-    'PR_CAT': 'categoria_Produto',
-    'PR_NOME': 'nome_Produto',
-}
-df=df.rename(columns=converção_colunas) #função renomear colunas com base no dicionário criado acima.
-df.columns
+print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n     LIMPANDO O DATAFRAME    \nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 
 # Remove colunas que estão completamente em branco
   # usa how='all' para apagar a coluna que estiver totalmnete vazia
   # axis=1 para apagar a coluna, caso fosse axis=0 apagaria a linha
 df_limpo = df.dropna(how='all', axis=1)
+df_limpo = df_limpo.dropna(how='all', axis=0)
+
+
+# Criação de um dicionário para renomear as colunas do DataFrame
+converção_colunas = {
+    'DATA': 'DataCompra',
+    'CO_ID': 'id_Compra',
+    'CL_ID': 'id_Cliente',
+    'CL_GENERO': 'GeneroCliente',
+    'CL_EC': 'EstadoCivil_Cl',
+    'CL_FHL': 'Qtd_Filhos_Cl',
+    'CL_SEG': 'SegmentoCliente',
+    'PR_ID': 'id_Produto',
+    'PR_CAT': 'CategoriaProduto',
+    'PR_NOME': 'NomeProduto',
+}
+df_limpo=df_limpo.rename(columns=converção_colunas) #função renomear colunas com base no dicionário criado acima.
+df_limpo.columns
+
+# Contabilizando os tratamentos feitos nos dados
+colunasExcluidas = df.shape[1] - df_limpo.shape[1]
+print(f">>> Total de {colunasExcluidas} colunas excluidas.")
+linhasExcluidas = df.shape[0] - df_limpo.shape[0]
+print(f">>> Total de {linhasExcluidas} linhas excluidas.\n")
+
+# Visualizando como ficou
+print(df_limpo.head(10)) # Mostrar as primeiras 10 linhas do arquivo Limpo
+
+# Salvar em um novo arquivo CSV (sem a coluna de índice)
+df_limpo.to_csv('BaseVarejoLimpo.csv', index=False)
+
+print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\nESTATÍSTICAS DESCRITIVAS columns:Qtd_Filhos_Cl\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+
+df_CadastroCliente = pd.read_csv('BaseVarejoLimpo.csv', usecols=['DataCompra','id_Compra','id_Cliente','GeneroCliente','EstadoCivil_Cl','Qtd_Filhos_Cl','SegmentoCliente'])
+df_CadastroCliente.drop_duplicates()
+print(df_CadastroCliente.head(30))
+
+
+
+
+
+'''
+
+#if "Qtd_Filhos_Cl" in df_limpo.columns:
+df_somaFilhosPorCliente = df_limpo.groupby('id_Cliente')['Qtd_Filhos_Cl'].sum().reset_index()
+print(df_somaFilhosPorCliente.head(10))
+
+print(f"• Contagem (N) : {df_somaFilhosPorCliente.sum().round(2)}")
+print(f"• Mediana      : {somaFilhosPorCliente.median():.2f}")
+print(f"• Desvio Padrão: {somaFilhosPorCliente.std():.2f}")
+print(f"• Quartil 25%  : {somaFilhosPorCliente.quantile(0.25):.2f}")
+print(f"• Quartil 50%  : {somaFilhosPorCliente.quantile(0.50):.2f}")
+print(f"• Quartil 75%  : {somaFilhosPorCliente.quantile(0.75):.2f}")
+
+print(f"• Média de filhos por Cliente : {somaFilhosPorCliente.mean():.2f}")
+print(f"• Máximo de filhos por Cliente: {somaFilhosPorCliente.max()}")
+print(f"• Mínimo de filhos por Cliente: {somaFilhosPorCliente.min()}")
+print(f"• (Moda) A maioria dos Clientes tem:{somaFilhosPorCliente.mode()[0] if not somaFilhosPorCliente.mode().empty else 'N/A'} filhos")
+
+
+
+
+
+
+
+
+
 
 print("Valores nulos por coluna:")
 print(df_limpo.isnull().sum()) # Mostrar a quantidade de valores nulos por coluna
 
 
-# Salvar em um novo arquivo CSV (sem a coluna de índice)
-df_limpo.to_csv('BaseVarejoLimpo.csv', index=False)
+
 print(df_limpo.head(10)) # Mostrar as primeiras 10 linhas do novo arquivo limpo
 
 # Contar quantas linhas duplicadas existem no total
@@ -90,11 +144,11 @@ plt.ylabel('ID da Compra')
 # 5. Mostrar o gráfico na tela
 plt.show()
 
-
+'''
 
 '''
 
-#, usecols=['DATA', 'CO_ID', 'CL_ID', 'CL_GENERO', 'CL_EC', 'CL_FHL', 'CL_SEG', 'PR_ID', 'PR_CAT', 'PR_NOME']
+#, 
 #, index_col='DATA'
 df.describe() # Mostra estatísticas descritivas do DataFrame
 print(df.describe()) # Mostra estatísticas descritivas do DataFrame
