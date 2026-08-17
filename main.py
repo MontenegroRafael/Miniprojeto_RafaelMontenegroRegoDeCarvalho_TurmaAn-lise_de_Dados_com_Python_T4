@@ -56,9 +56,31 @@ df_limpo.to_csv('BaseVarejoLimpo.csv', index=False)
 
 print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\nESTATÍSTICAS DESCRITIVAS columns:Qtd_Filhos_Cl\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 
-df_CadastroCliente = pd.read_csv('BaseVarejoLimpo.csv', usecols=['DataCompra','id_Compra','id_Cliente','GeneroCliente','EstadoCivil_Cl','Qtd_Filhos_Cl','SegmentoCliente'])
-df_CadastroCliente.drop_duplicates()
-print(df_CadastroCliente.head(30))
+# 1. Carrega os dados
+df_CadastroCliente = pd.read_csv('BaseVarejoLimpo.csv', usecols=['id_Cliente','GeneroCliente','EstadoCivil_Cl','Qtd_Filhos_Cl','SegmentoCliente'], index_col='id_Cliente')
+
+# 2. Remove as duplicatas e atualiza o DataFrame
+df_CadastroCliente = df_CadastroCliente.drop_duplicates()
+
+# 3. Organiza o índice em ordem numérica crescente
+df_CadastroCliente = df_CadastroCliente.sort_index(ascending=True)
+
+# Salvar em um novo arquivo CSV (sem a coluna de índice)
+df_CadastroCliente.to_csv('BaseCadastroClientes.csv', index=False)
+
+filhos = df_CadastroCliente["Qtd_Filhos_Cl"].dropna()
+print(f"• Mediana      : {filhos.median():.2f}")
+print(f"• Desvio Padrão: {filhos.std():.2f}")
+print(f"• Quartil 25%  : {filhos.quantile(0.25):.2f}")
+print(f"• Quartil 50%  : {filhos.quantile(0.50):.2f}")
+print(f"• Quartil 75%  : {filhos.quantile(0.75):.2f}")
+
+print(f"• Média de filhos por Cliente : {filhos.mean():.2f}")
+print(f"• Máximo de filhos por Cliente: {filhos.max()}")
+print(f"• Mínimo de filhos por Cliente: {filhos.min()}")
+print(f"• (Moda) A maioria dos Clientes tem:{filhos.mode()[0] if not filhos.mode().empty else 'N/A'} filhos")
+print(f"• Total de Filhos de todos os Clientes : {filhos.sum().round(2)}")
+
 
 
 
@@ -84,7 +106,8 @@ print(f"• (Moda) A maioria dos Clientes tem:{somaFilhosPorCliente.mode()[0] if
 
 
 
-
+#df_CadastroCliente = pd.read_csv('BaseVarejoLimpo.csv', usecols=['id_Cliente','GeneroCliente','EstadoCivil_Cl','Qtd_Filhos_Cl','SegmentoCliente'], index_col='id_Cliente')
+#df_CadastroCliente = df_CadastroCliente[~df_CadastroCliente.index.duplicated(keep='first')]
 
 
 
