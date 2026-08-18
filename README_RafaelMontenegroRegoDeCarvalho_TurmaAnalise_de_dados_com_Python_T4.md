@@ -5,21 +5,22 @@ Este projeto analisa um conjunto de dados para achar respostas e padrões úteis
 
 ## **O que o projeto faz:**
 
->Limpa e organiza os dados brutos.
->Cria gráficos para mostrar tendências.
->Mostra os pontos mais importantes dos dados.
+- Limpa e organiza os dados brutos.
+- Cria gráficos para mostrar tendências.
+- Mostra os pontos mais importantes dos dados.
 
 ## **Ferramentas usadas:**
 
->PythonPandas (para tratar os dados)
->Matplotlib / Seaborn (para desenhar os gráficos)
->VS Code
+- Python
+- Pandas (para tratar os dados)
+- Matplotlib / Seaborn (para desenhar os gráficos)
+- VS Code
 
 ## **Como rodar o projeto:**
 
->Abra esta pasta no seu VS Code.
->Crie e ative um ambiente virtual.
->Instale os pacotes necessários
+- Abra esta pasta no seu VS Code.
+- Crie e ative um ambiente virtual.
+- Instale os pacotes necessários
 
 ### ***import pandas as pd***
 ### ***import numpy as np***
